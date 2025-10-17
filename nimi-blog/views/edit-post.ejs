@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post - <%= post.title %> - Nimi Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style> 
+        body { 
+            font-family: 'Inter', sans-serif; 
+        } 
+        /* Professional Dark Background Gradient (from profile page) */
+        .bg-gradient-dark {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+        /* Custom card background for contrast (from profile page) */
+        .card-dark {
+            background-color: #1f2937;
+        }
+        /* Style for form inputs (consistent with edit profile) */
+        .input-minimal {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            color: #f3f4f6;
+            transition: all 0.2s;
+        }
+        .input-minimal:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.5); /* sky-500 with transparency */
+            background-color: #1f2937;
+        }
+    </style>
+</head>
+<body class="bg-gradient-dark min-h-screen antialiased p-8 lg:p-12">
+
+    <!-- Header (Consistent with profile page) -->
+    <header class="mb-10 flex justify-between items-center max-w-5xl mx-auto">
+        <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
+            <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
+        </h1>
+        <nav>
+            <a href="/profile" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150 mr-6">
+                <i class="fas fa-user mr-1"></i> Profile
+            </a>
+            <a href="/logout" class="text-gray-300 hover:text-red-500 font-medium transition duration-150">
+                <i class="fas fa-sign-out-alt mr-1"></i> Log Out
+            </a>
+        </nav>
+    </header>
+
+    <div class="max-w-4xl mx-auto">
+
+        <h2 class="text-4xl font-extrabold text-white mb-6 tracking-tight">
+            <i class="fas fa-pen-square mr-3 text-sky-500"></i> Edit Post
+        </h2>
+        <p class="text-gray-400 mb-8">You are currently editing the post: **"<%= post.title %>"**</p>
+
+        <!-- Post Edit Form -->
+        <form method="POST" action="/post/update/<%= post.id %>" class="card-dark rounded-xl p-8 shadow-2xl space-y-6">
+
+            <!-- Post Title -->
+            <div>
+                <!-- Heading accent used for consistency with edit profile page -->
+                <label for="title" class="block text-xl font-semibold text-gray-300 mb-3 border-l-4 border-sky-500 pl-3">Post Title</label>
+                <input type="text" id="title" name="title"
+                    value="<%= post.title %>"
+                    placeholder="Enter the title of your post"
+                    class="input-minimal w-full rounded-lg p-4 text-lg focus:border-sky-500">
+            </div>
+
+            <!-- Post Content -->
+            <div>
+                 <!-- Heading accent used for consistency with edit profile page -->
+                <label for="content" class="block text-xl font-semibold text-gray-300 mb-3 border-l-4 border-sky-500 pl-3">Post Content</label>
+                <textarea id="content" name="content" rows="18"
+                    placeholder="Write the body of your blog post here..."
+                    class="input-minimal w-full rounded-lg p-4 text-base focus:border-sky-500 resize-y"><%= post.content %></textarea>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex justify-between items-center pt-4 border-t border-gray-700">
+                
+                <!-- Danger Action: Delete Post -->
+                <button type="button" id="delete-post-btn"
+                    class="inline-flex items-center px-4 py-2 bg-red-700 text-white font-semibold rounded-lg hover:bg-red-800 transition duration-200 shadow-md">
+                    <i class="fas fa-trash-alt mr-2"></i> Delete Post
+                </button>
+
+                <!-- Save/Cancel Actions -->
+                <div class="space-x-4">
+                    <a href="/post/<%= post.id %>" class="inline-flex items-center px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition duration-200 shadow-md">
+                        <i class="fas fa-times-circle mr-2"></i> Cancel
+                    </a>
+                    <button type="submit"
+                        class="inline-flex items-center px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg hover:bg-sky-700 transition duration-200 transform hover:-translate-y-px shadow-xl shadow-sky-500/30">
+                        <i class="fas fa-save mr-2"></i> Save Changes
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    
+    <script>
+        // Note: In a real app, clicking the delete button should show a custom confirmation modal 
+        // (since we cannot use 'confirm()') before submitting a form to a delete endpoint.
+        document.getElementById('delete-post-btn').addEventListener('click', () => {
+            console.log("Delete button clicked. Implement confirmation modal and POST request to /post/delete/<%= post.id %> here.");
+        });
+    </script>
+</body>
+</html>

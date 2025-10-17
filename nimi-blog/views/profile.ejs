@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= user.userName %>'s Profile - Nimi Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style> 
+        body { 
+            font-family: 'Inter', sans-serif; 
+        } 
+        /* Professional Dark Background Gradient */
+        .bg-gradient-dark {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+        /* Custom card background for contrast */
+        .card-dark {
+            background-color: #1f2937;
+        }
+        /* Style for profile data display (similar to input-minimal) */
+        .data-display {
+            background-color: rgba(31, 41, 55, 0.7);
+            border-left: 3px solid #374151; /* Subtle divider */
+            padding: 0.75rem 1rem;
+            color: #f3f4f6; 
+            min-height: 48px; /* Standardize height */
+        }
+        /* Sky Blue Accent on hover for posts */
+        .post-link:hover {
+            border-left-color: #0ea5e9;
+        }
+    </style>
+</head>
+<body class="bg-gradient-dark min-h-screen antialiased p-8 lg:p-12">
+
+    <header class="mb-10 flex justify-between items-center max-w-5xl mx-auto">
+        <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
+            <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
+        </h1>
+        <nav>
+            <a href="/" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150 mr-6">
+                <i class="fas fa-home-alt mr-1"></i> Home 
+            </a>
+            <a href="/dashboard" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150 mr-6">
+                <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+            </a>
+            <a href="/logout" class="text-gray-300 hover:text-red-500 font-medium transition duration-150">
+                <i class="fas fa-sign-out-alt mr-1"></i> Log Out
+            </a>
+        </nav>
+    </header>
+
+    <div class="max-w-5xl mx-auto">
+
+        <div class="card-dark rounded-xl p-8 mb-8 shadow-2xl flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+            <div class="relative">
+                <img 
+                src="<%= user.profileImage %>" 
+                alt="Profile Picture"
+                class="w-32 h-32 rounded-full object-cover border-4 border-sky-600 shadow-xl">
+                <span class="absolute bottom-1 right-1 w-5 h-5 bg-green-500 rounded-full border border-gray-900" title="Online"></span>
+            </div>
+
+            <div class="text-center md:text-left flex-grow">
+                <h2 class="text-4xl font-bold text-white tracking-tight"><%= user.userName %></h2>
+                <p class="text-xl text-gray-400 mt-1"><%= user.jobTitle || 'Aspiring Blogger' %></p>
+                <p class="text-gray-400 mt-4 max-w-lg"><i class="fas fa-quote-left mr-2 text-sky-500"></i> <%= user.bio || 'This user has not yet written a biography. Share your story!' %></p>
+            </div>
+
+            <% if (user.posts.length > 0) { %>
+            <!-- Fix: Use flex-col and space-y-4 to force vertical stacking and consistent spacing -->
+            <div class="md:self-start flex flex-col space-y-4 pt-4 ">
+                <a href="/profile/edit"
+                    class="inline-flex items-center px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg hover:bg-sky-700 transition duration-200  hover:-translate-y-px shadow-sky-500/30">
+                    <i class="fas fa-user-edit mr-2"></i> Edit Profile
+                </a>
+                <a href="/write-post"
+                    class="inline-flex items-center px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg hover:bg-sky-700 transition duration-200  hover:-translate-y-px shadow-sky-500/30">
+                    <i class="fas fa-plus-circle mr-2"></i> Create New Post
+                </a>
+            </div>
+            <% } else { %>
+            <!-- Fix: Use flex-col and space-y-4 for consistency and remove redundant mt-4 -->
+            <div class="md:self-start flex flex-col space-y-4 pt-8">
+                <a href="/profile/edit"
+                class="inline-flex items-center px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg hover:bg-sky-700 transition duration-200 shadow-lg transform hover:-translate-y-px shadow-sky-500/30">
+                <i class="fas fa-user-edit mr-2"></i> Edit Profile
+                </a>
+            </div>
+            <% } %>
+
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-1 space-y-6">
+                <div class="card-dark p-6 rounded-xl shadow-xl">
+                    <h3 class="text-2xl font-semibold text-white mb-5 border-b border-gray-700 pb-3">Account Details</h3>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Email</label>
+                        <p class="data-display rounded-lg text-sm truncate"><%= user.email %></p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Member Since</label>
+                        <p class="data-display rounded-lg text-sm"><%= user.createdAt.toDateString() %></p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Total Posts</label>
+                        <p class="data-display rounded-lg text-sm"><%= user.posts.length %></p>
+                    </div>
+                </div>
+
+                <div class="card-dark p-6 rounded-xl shadow-xl">
+                    <h3 class="text-2xl font-semibold text-white mb-5 border-b border-gray-700 pb-3">Settings</h3>
+                    <a href="#" class="block text-gray-300 hover:text-sky-500 transition duration-150 py-2 border-b border-gray-800 flex items-center">
+                        <i class="fas fa-shield-alt w-6 text-center mr-2"></i> Update Password & Security
+                    </a>
+                    <a href="#" class="block text-gray-300 hover:text-sky-500 transition duration-150 py-2 flex items-center">
+                        <i class="fas fa-bell w-6 text-center mr-2"></i> Notification Preferences
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <div class="card-dark p-6 rounded-xl shadow-xl">
+                    <h3 class="text-2xl font-semibold text-white mb-5 border-b border-gray-700 pb-3">Recent Posts (<%= user.posts.length > 5 ? 'Top 5' : user.posts.length %>)</h3>
+
+                    <% 
+                        // 1. Create a copy of the array and sort by creation date (newest first)
+                        const sortedPosts = user.posts.slice().sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+                        
+                        // 2. Select only the top 5 recent posts
+                        const topFivePosts = sortedPosts.slice(0, 5);
+                    %>
+
+                    <% if ( user.posts.length > 0) { %>
+                        <ul class="space-y-4">
+                            <% topFivePosts.forEach(post => { %>
+                                <li class="post-link transition duration-150 border-l-4 border-transparent pl-4 py-2 hover:bg-gray-800 rounded-md">
+                                    <a href="/single-blog/<%= post.id %>" class="block">
+                                        <p class="text-lg font-medium text-white hover:text-sky-400 transition duration-150 truncate"><%= post.title %></p>
+                                        <p class="text-sm text-gray-400 mt-1 flex items-center">
+                                            <i class="fas fa-calendar-alt mr-2 text-sky-500"></i> <%= post.createdAt.toDateString() %> 
+                                            <span class="mx-3 text-gray-600">|</span>
+                                            <i class="fas fa-thumbs-up mr-2 text-sky-500"></i> <%= post.likes.length %> Likes
+                                        </p>
+                                    </a>
+                                </li>
+                            <% }) %>
+                        </ul>
+                        <div class="mt-6 text-center border-t border-gray-800 pt-4">
+                            <a href="/user/<%= user._id %>/view-all-posts" class="text-sky-500 hover:text-sky-400 font-medium transition duration-150 flex items-center justify-center">
+                                View All <%= user.userName %>'s Posts <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center py-10 text-gray-500 mt-4">
+                            <i class="fas fa-pen-nib text-4xl mb-3 text-gray-600"></i>
+                            <p class="text-lg">No posts published yet. Start sharing your first story!</p>
+                            <a href="/write-post" class="mt-4 inline-block text-sky-500 hover:text-sky-400 font-semibold transition duration-150">
+                                <i class="fas fa-plus-circle mr-2"></i> Create a New Post
+                            </a>
+                        </div>
+                    <% } %>
+                    </div>
+            </div>
+            </div>
+    </div>
+
+</body>
+</html>

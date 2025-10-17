@@ -1,0 +1,28 @@
+# Environment variables
+.env
+
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+
+# Build or cache
+dist/
+build/
+.cache/
+.temp/
+
+# Uploads (optional - uncomment if you don't want to commit uploaded files)
+# public/uploads/
+
+# VS Code settings
+.vscode/

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= post.title %> | Nimi Blog</title>
+
+  <!-- Tailwind & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background: radial-gradient(circle at top left, #111827, #0f172a 70%);
+      color: #f3f4f6;
+    }
+    .card-dark {
+      background-color: #1f2937;
+      border: 1px solid #374151;
+    }
+    .post-content p {
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    .post-content h2, .post-content h3 {
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: #f9fafb;
+    }
+    .post-content a {
+      color: #0ea5e9;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+    .post-content a:hover {
+      color: #38bdf8;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #3b82f6;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background-color: #1f2937;
+    }
+  </style>
+</head>
+
+<body class="antialiased min-h-screen">
+
+  <!-- HEADER -->
+  <header class="border-b border-gray-800 py-4 mb-10 bg-[#0f172a]/80 backdrop-blur-sm sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto flex justify-between items-center px-6">
+      <h1 class="text-2xl font-bold text-sky-500 flex items-center space-x-2">
+        <i class="fas fa-feather-alt"></i>
+        <span>Nimi Blog</span>
+      </h1>
+      <nav class="space-x-6 text-sm font-medium">
+        <a href="/profile" class="text-gray-300 hover:text-sky-400 transition"><i class="fas fa-user mr-1"></i> Profile</a>
+        <a href="/logout" class="text-gray-300 hover:text-red-400 transition"><i class="fas fa-sign-out-alt mr-1"></i> Log Out</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="max-w-4xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-white mb-8">Blog Post</h2>
+    <!-- Back Button -->
+    <a href="/user/<%= post.author._id %>~/view-all-posts-of-writer" class="text-gray-400 hover:text-sky-400 transition flex items-center mb-6 font-medium">
+      <i class="fas fa-arrow-left mr-3"></i> Back to all posts
+    </a>
+
+    <!-- Blog Card -->
+    <article class="card-dark rounded-2xl p-10 shadow-xl">
+      
+      <!-- Title + Meta -->
+      <header class="border-b border-gray-700 pb-6 mb-8">
+        <h1 class="text-5xl font-extrabold text-white leading-tight mb-4 tracking-tight">
+          <%= post.title %>
+        </h1>
+
+        <div class="flex flex-wrap items-center text-gray-400 text-sm gap-x-6 gap-y-2">
+          <a href="/search-profile/<%= post.author._id%>" class="flex items-center hover:text-sky-400 transition">
+            <img src="<%= post.author.profileImage || 'https://via.placeholder.com/40/0ea5e9/ffffff?text=A' %>"
+                 alt="<%= post.author.name %>"
+                 class="w-9 h-9 rounded-full object-cover border-2 border-sky-600 mr-2" />
+            <span class="font-semibold text-white"><%= post.author.name %></span>
+          </a>
+          <span class="flex items-center"><i class="fas fa-calendar-alt mr-2 text-sky-500"></i> <%= post.createdAt.toDateString() %></span>
+          <span class="flex items-center"><i class="fas fa-clock mr-2 text-sky-500"></i> 5 min read</span>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <section class="post-content text-lg text-gray-300 leading-relaxed">
+        <%= post.content %>
+      </section>
+
+      <!-- Footer: Like + Share -->
+      <footer class="mt-10 pt-6 border-t border-gray-700 flex justify-between flex-wrap items-center gap-4">
+
+        <!-- Like Button -->
+        <button id="likeButton"
+          onclick="toggleLike('<%= post._id %>')"
+          class="inline-flex items-center px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg transition shadow-md shadow-sky-700/30">
+          <i id="likeIcon" class="fas fa-thumbs-up mr-2"></i>
+          <span id="likeText">Like (<span id="likeCount"><%= post.likes.length %></span>)</span>
+        </button>
+
+        <div class="flex items-center space-x-6 text-gray-400 text-sm">
+          <span class="flex items-center font-medium">
+            <i class="fas fa-comment-dots mr-2 text-sky-500 text-lg"></i>
+            <%= post.comments.length %> Comments
+          </span>
+          <a href="#" class="hover:text-sky-500 transition">
+            <i class="fas fa-share-alt mr-1"></i> Share
+          </a>
+        </div>
+      </footer>
+    </article>
+
+    <!-- Comments Section -->
+    <section class="mt-12">
+      <h3 class="text-2xl font-bold text-white mb-6 border-l-4 border-sky-500 pl-3">
+        Comments (<%= post.comments.length %>)
+      </h3>
+
+      <div class="card-dark rounded-2xl p-6 shadow-xl space-y-8">
+        <% if (post.comments.length > 0) { %>
+          <div class="max-h-96 overflow-y-auto pr-2 custom-scrollbar space-y-6">
+            <% post.comments.forEach((comment) => { %>
+              <div class="border-b border-gray-700 pb-5 last:border-0 last:pb-0">
+                <div class="flex items-center mb-2">
+                  <img src="<%= comment.author && comment.author.profileImage ? comment.author.profileImage : 'https://via.placeholder.com/40/3b82f6/ffffff?text=U' %>"
+                 class="w-10 h-10 rounded-full object-cover mr-3 border-2 border-sky-500" />
+                 <div>
+                 <p class="text-base font-semibold text-white"><%= comment.author ? comment.author.name : 'Unknown User' %></p>
+                 <p class="text-xs text-gray-500"><%= new Date(comment.createdAt).toDateString() %></p>
+                </div>
+                </div>
+                <p class="text-gray-300 ml-12"><%= comment.content %></p>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p class="text-gray-400 italic">No comments yet. Be the first to share your thoughts!</p>
+        <% } %>
+
+        <!-- Comment Input -->
+        <form action="/post/<%= post._id %>/comment" method="POST">
+          <div class="pt-6 border-t border-gray-700">
+            <textarea name="content" placeholder="Write your comment..." rows="3" 
+                      class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-sm text-gray-100 resize-y focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-600"></textarea>
+            <button type="submit" class="mt-4 inline-flex items-center px-5 py-2 bg-sky-600 text-white text-sm font-semibold rounded-lg hover:bg-sky-700 transition shadow-lg shadow-sky-700/30">
+              <i class="fas fa-paper-plane mr-2"></i> Submit Comment
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <!-- FOOTER -->
+  <footer class="mt-16 border-t border-gray-800 py-6 text-center text-gray-500 text-sm">
+    © <%= new Date().getFullYear() %> Nimi Blog — Built for thinkers & creators.
+  </footer>
+
+  <script>
+    let liked = false;
+    let likeCount = "<%= post.likes.length %>";
+
+    async function toggleLike(postId) {
+      liked = !liked;
+      const btn = document.getElementById("likeButton");
+      const icon = document.getElementById("likeIcon");
+      const text = document.getElementById("likeText");
+
+      // Update UI instantly
+      if (liked) {
+        btn.classList.remove("bg-sky-600", "hover:bg-sky-700");
+        btn.classList.add("bg-red-600", "hover:bg-red-700");
+        icon.classList.remove("fa-thumbs-up");
+        icon.classList.add("fa-thumbs-down");
+        likeCount++;
+        text.innerHTML = `Dislike (<span id="likeCount">${likeCount}</span>)`;
+      } else {
+        btn.classList.remove("bg-red-600", "hover:bg-red-700");
+        btn.classList.add("bg-sky-600", "hover:bg-sky-700");
+        icon.classList.remove("fa-thumbs-down");
+        icon.classList.add("fa-thumbs-up");
+        likeCount--;
+        text.innerHTML = `Like (<span id="likeCount">${likeCount}</span>)`;
+      }
+
+      // Send request to backend route
+      const endpoint = liked ? `/post/${postId}/like` : `/post/${postId}/dislike`;
+      try {
+        await fetch(endpoint, { method: "POST", headers: { "X-Requested-With": "XMLHttpRequest" } });
+      } catch (err) {
+        console.error("Server error:", err);
+      }
+    }
+  </script>
+
+</body>
+</html>

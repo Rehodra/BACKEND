@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nimi Blog - Log In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style> 
+        body { 
+            font-family: 'Inter', sans-serif; 
+        } 
+        /* Professional Dark Background Gradient */
+        .bg-gradient-dark {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+        /* Custom input style for minimalist dark look */
+        .input-minimal {
+            background-color: rgba(31, 41, 55, 0.7); /* Slightly transparent dark background */
+            border-bottom: 2px solid #374151; /* Subtle divider */
+            padding: 1rem 0.75rem;
+            color: #f3f4f6; /* Light text */
+        }
+        /* Sky Blue Focus Color */
+        .input-minimal:focus {
+            border-bottom-color: #0ea5e9; /* Sky 500 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-dark min-h-screen flex items-center justify-center antialiased p-4">
+
+    <!-- Split Design Container -->
+    <div class="w-full max-w-4xl flex flex-col md:flex-row rounded-xl overflow-hidden shadow-2xl">
+        
+        <!-- Left Panel: Branding & Marketing (Sky Blue Accent) -->
+        <div class="md:w-1/2 bg-sky-600 p-10 flex flex-col justify-center items-center text-white text-center space-y-6">
+            <i class="fas fa-feather-alt text-7xl opacity-90 drop-shadow-md"></i>
+            <h1 class="text-4xl font-extrabold tracking-wider">
+                Nimi Blog: Write, Connect, Grow
+            </h1>
+            <p class="text-lg font-light opacity-80">
+                Access your dashboard and continue sharing your stories with the world.
+            </p>
+            <div class="space-y-2 pt-4">
+                <p class="text-sm font-semibold flex items-center justify-center opacity-90">
+                    <i class="fas fa-lock mr-2"></i> Secure Sign-In Process
+                </p>
+                <p class="text-sm font-semibold flex items-center justify-center opacity-90">
+                    <i class="fas fa-user-circle mr-2"></i> Instant Access to Your Content
+                </p>
+            </div>
+        </div>
+        
+        <!-- Right Panel: Login Form -->
+        <div class="md:w-1/2 bg-gray-900 p-10">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-white">Sign In to Your Account</h2>
+                <p class="text-gray-400 mt-2 text-sm">Welcome back! Enter your credentials below.</p>
+                <p id="user-id-display" class="text-xs text-gray-500 mt-2 font-mono break-all">Loading user ID...</p>
+            </div>
+            <% if (flashError && flashError.length) { %>
+                <div class="mb-4">
+                    <div class="bg-red-800 text-red-100 px-4 py-3 rounded">
+                        <%= flashError[0] %>
+                    </div>
+                </div>
+            <% } %>
+            <% if (flashSuccess && flashSuccess.length) { %>
+                <div class="mb-4">
+                    <div class="bg-green-800 text-green-100 px-4 py-3 rounded">
+                        <%= flashSuccess[0] %>
+                    </div>
+                </div>
+            <% } %>
+            
+
+            <form  method="post" action="/login-user" id="login-form" class="space-y-5">
+                
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" required 
+                        class="input-minimal w-full rounded-lg text-white placeholder-gray-500 transition duration-150"
+                        placeholder="you@example.com">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                    <input type="password" id="password" name="password" required 
+                        class="input-minimal w-full rounded-lg text-white placeholder-gray-500 transition duration-150"
+                        placeholder="Your Secret Password">
+                </div>
+                
+                <!-- Submit Button (Sky Blue Accent) -->
+                <button type="submit" id="login-button"
+                    class="w-full py-3 mt-6 bg-sky-600 text-white font-bold text-lg rounded-lg hover:bg-sky-700 transition duration-200 shadow-lg transform hover:-translate-y-px shadow-sky-500/30 hover:shadow-sky-500/50 flex items-center justify-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i> 
+                    <span>Log In Now</span>
+                </button>
+            </form>
+
+            <p class="mt-8 text-center text-sm text-gray-400">
+                Don't have an account? 
+                <a href="/register" class="text-sky-500 hover:text-sky-400 font-medium transition duration-150">Sign Up Here</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Imports -->
+    
+</body>
+</html>

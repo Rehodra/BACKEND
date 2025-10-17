@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - <%= user.userName %> - Nimi Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Professional Dark Background Gradient */
+        .bg-gradient-dark {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+        /* Custom card background for contrast */
+        .card-dark {
+            background-color: #1f2937;
+        }
+        /* Style for form inputs */
+        .input-minimal {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            color: #f3f4f6;
+            transition: all 0.2s;
+        }
+        .input-minimal:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.5); /* sky-500 with transparency */
+            background-color: #1f2937;
+        }
+        /* Custom file input style for better aesthetics (MUST be hidden) */
+        .file-input-custom {
+            display: none;
+        }
+        /* Removed requirement-box styles for simplicity */
+    </style>
+</head>
+<body class="bg-gradient-dark min-h-screen antialiased p-8 lg:p-12">
+
+    <!-- Header (Copied from Profile page) -->
+    <header class="mb-10 flex justify-between items-center max-w-5xl mx-auto">
+        <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
+            <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
+        </h1>
+        <nav>
+            <a href="/dashboard" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150 mr-6">
+                <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+            </a>
+            <a href="/logout" class="text-gray-300 hover:text-red-500 font-medium transition duration-150">
+                <i class="fas fa-sign-out-alt mr-1"></i> Log Out
+            </a>
+        </nav>
+    </header>
+
+    <div class="max-w-3xl mx-auto">
+
+        <h2 class="text-4xl font-extrabold text-white mb-6 tracking-tight">
+            <i class="fas fa-user-edit mr-3 text-sky-500"></i> Edit Profile
+        </h2>
+        <p class="text-gray-400 mb-8">Update your public details and profile picture below. Fields marked * are required.</p>
+
+        <!-- Profile Edit Form -->
+        <form method="POST" action="/profile/update/<%= user._id %>" class="card-dark rounded-xl p-8 shadow-2xl space-y-8" enctype="multipart/form-data">
+
+            <!-- Profile Picture Section (Simplified) -->
+            <div class="border-b border-gray-700 pb-8">
+                <h3 class="text-xl font-semibold text-white mb-6 border-l-4 border-sky-500 pl-3">Profile Picture</h3>
+                
+                <div class="flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-8 items-center sm:items-start">
+                    
+                    <!-- LEFT COLUMN: Image and Edit Button Wrapper -->
+                    <div class="flex-shrink-0">
+                         <div class="relative w-32 h-32 group">
+                            
+                            <!-- Current Image Preview -->
+                            <img
+                                id="profile-preview"
+                                src="<%= user.profileImage || `https://via.placeholder.com/150/0ea5e9/ffffff?text=${user.initials}` %>"
+                                alt="Current Profile Picture"
+                                class="w-full h-full rounded-full object-cover border-4 border-sky-600 shadow-xl transition duration-300 group-hover:opacity-75"
+                            >
+                            
+                            <!-- Hidden File Input -->
+                            <input type="file" id="profileImage" name="profileImage" accept="image/*" class="file-input-custom" onchange="previewImage(event)">
+
+                            <!-- Overlay Edit Button (Camera Icon) -->
+                            <label for="profileImage"
+                                class="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer"
+                                title="Change Profile Picture">
+                                <i class="fas fa-camera text-3xl text-white"></i>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <!-- RIGHT COLUMN: Instructions and Buttons (Simplified) -->
+                    <div class="flex-grow space-y-2 pt-1">
+                        
+                        <p class="text-base text-gray-300 font-medium">Click the image to upload a new profile photo (JPG, PNG, GIF, Max 1MB).</p>
+                        
+                        <!-- Status Display (Simple text) -->
+                        <p id="file-name-display" class="text-sm font-medium text-sky-400">
+                            Status: <%= user.profileImageUrl ? 'Image set' : 'no profile picture' %>
+                        </p>
+                        
+                        <!-- Action Buttons: Remove Photo -->
+                        <div class="pt-3">
+                             <% if (user.profileImageUrl) { %>
+                                <button type="button" id="remove-photo-btn"
+                                    class="inline-flex items-center px-3 py-1.5 border border-red-700 text-red-400 text-sm font-semibold rounded-lg hover:bg-red-800 hover:text-white transition duration-200 shadow-md">
+                                    <i class="fas fa-trash-alt mr-2"></i> Remove Photo
+                                </button>
+                            <% } %>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- General Details Section -->
+            <div class="space-y-6">
+                <h3 class="text-xl font-semibold text-white mb-6 border-l-4 border-sky-500 pl-3">Account Details</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Full Name -->
+                    <div>
+                        <label for="fullName" class="block text-sm font-medium text-gray-300 mb-2">Full Name *</label>
+                        <input type="text" id="fullName" name="name"
+                            value="<%= user.name || '' %>"
+                            placeholder="Your full name"
+                            class="input-minimal w-full rounded-lg p-3 text-sm focus:border-sky-500">
+                    </div>
+
+                    <!-- Username (Read-only for identifier) -->
+                    <div>
+                        <label for="userName" class="block text-sm font-medium text-gray-300 mb-2">Username (Cannot be changed)</label>
+                        <input type="text" id="userName" name="userName"
+                            value="<%= user.userName %>"
+                            disabled
+                            class="input-minimal w-full rounded-lg p-3 text-sm opacity-50 cursor-not-allowed">
+                    </div>
+                    
+                    <!-- Title/Job Role -->
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-300 mb-2">Title / Job Role</label>
+                        <input type="text" id="title" name="jobTitle"
+                            value="<%= user.jobTitle || '' %>"
+                            placeholder="e.g., Lead Developer, Freelance Writer"
+                            class="input-minimal w-full rounded-lg p-3 text-sm">
+                    </div>
+
+                    <!-- Location -->
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-300 mb-2">Location</label>
+                        <input type="text" id="location" name="location"
+                            value="<%= user.location || '' %>"
+                            placeholder="City, Country"
+                            class="input-minimal w-full rounded-lg p-3 text-sm">
+                    </div>
+                </div>
+
+                <!-- Bio / Biography -->
+                <div class="pt-2">
+                    <label for="bio" class="block text-sm font-medium text-gray-300 mb-2">Biography / About Me</label>
+                    <textarea id="bio" name="bio" rows="4"
+                        placeholder="Tell the community a little about yourself, your interests, and what you blog about."
+                        class="input-minimal w-full rounded-lg p-3 text-sm"><%= user.bio || '' %></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Keep it concise and engaging. Max 300 characters.</p>
+                </div>
+            </div>
+
+
+            <!-- Action Buttons (Kept right-aligned for professionalism) -->
+            <div class="flex justify-end space-x-4 pt-4 border-t border-gray-700">
+                <a href="/profile" class="inline-flex items-center px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition duration-200 shadow-md">
+                    <i class="fas fa-times-circle mr-2"></i> Cancel
+                </a>
+                <button type="submit"
+                    class="inline-flex items-center px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg hover:bg-sky-700 transition duration-200 transform hover:-translate-y-px shadow-xl shadow-sky-500/30">
+                    <i class="fas fa-save mr-2"></i> Save Changes
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        /**
+          Function to preview the selected image locally before upload.
+         */
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('profile-preview');
+            const fileNameDisplay = document.getElementById('file-name-display');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+                fileNameDisplay.textContent = `Selected: ${file.name}`;
+                fileNameDisplay.classList.remove('text-sky-400');
+                fileNameDisplay.classList.add('text-green-400');
+            } else {
+                
+                preview.src = "<%= user.profileImageUrl || `https://via.placeholder.com/150/0ea5e9/ffffff?text=${user.initials}` %>";
+                fileNameDisplay.textContent = "Current Status: <%= user.profileImageUrl ? 'Image set' : 'Default initial' %>";
+                fileNameDisplay.classList.remove('text-green-400');
+                fileNameDisplay.classList.add('text-sky-400');
+            }
+        }
+        
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const removeBtn = document.getElementById('remove-photo-btn');
+            if (removeBtn) {
+                removeBtn.addEventListener('click', (e) => {
+                    // Prevent form submission if this button is clicked
+                    e.preventDefault(); 
+                    
+                    
+                    console.log('Remove Photo clicked. Add confirmation and AJAX call here.');
+                    
+                    const preview = document.getElementById('profile-preview');
+                    const fileNameDisplay = document.getElementById('file-name-display');
+                    
+                    const initials = "<%= user.initials %>" || 'NU'; // Fallback initials
+                    preview.src = `https://via.placeholder.com/150/0ea5e9/ffffff?text=${initials}`;
+
+                    fileNameDisplay.textContent = "Current Status: Default initial";
+                    fileNameDisplay.classList.remove('text-green-400');
+                    fileNameDisplay.classList.add('text-sky-400');
+                    
+                    // Optionally, remove the remove button until a new photo is uploaded
+                    removeBtn.style.display = 'none'; 
+                });
+            }
+        });
+    </script>
+</body>
+</html>
