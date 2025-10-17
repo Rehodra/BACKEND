@@ -44,7 +44,7 @@
 -  Create, edit, delete, and view blog posts  
 <img width="1182" height="679" alt="image" src="https://github.com/user-attachments/assets/343e6635-9e31-45b2-9fb1-7f7547bb3885" />
 
-- ✅ Comment on posts and like posts/comments  
+-  Comment on posts and like posts/comments  
 <img width="730" height="780" alt="image" src="https://github.com/user-attachments/assets/d23d96b7-3d80-42c9-97e5-56a9dcab5e36" />
 
 -  Follow/unfollow other users and view followers/following
