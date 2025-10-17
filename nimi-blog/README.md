@@ -2,6 +2,8 @@
 
 **A modern blogging platform where users can create posts, interact via comments and likes, follow other users, and manage their profiles.**
 
+<img width="1232" height="910" alt="image" src="https://github.com/user-attachments/assets/a6dd3e77-9d09-4144-8968-8a00111835e8" />
+
 ---
 
 ## 🚀 Technologies Used
@@ -35,12 +37,25 @@
 
 ## ✨ Key Features
 
-- ✅ User registration, login, and authentication with JWT  
-- ✅ Create, edit, delete, and view blog posts  
+-  User registration, login, and authentication with JWT  
+<img width="1556" height="853" alt="image" src="https://github.com/user-attachments/assets/88cf29a7-9ce6-4615-9264-02616336b700" />
+
+
+-  Create, edit, delete, and view blog posts  
+<img width="1182" height="679" alt="image" src="https://github.com/user-attachments/assets/343e6635-9e31-45b2-9fb1-7f7547bb3885" />
+
 - ✅ Comment on posts and like posts/comments  
-- ✅ Follow/unfollow other users and view followers/following  
-- ✅ Profile management with profile picture upload (Multer + Cloudinary)  
-- ✅ Dashboard with user metrics (posts, likes, comments, followers) fetched in real-time  
+<img width="730" height="780" alt="image" src="https://github.com/user-attachments/assets/d23d96b7-3d80-42c9-97e5-56a9dcab5e36" />
+
+-  Follow/unfollow other users and view followers/following
+<img width="1558" height="915" alt="image" src="https://github.com/user-attachments/assets/ff6ae4bb-d52a-4d5f-ab71-211098a6c3c2" />
+
+-  Profile management with profile picture upload (Multer + Cloudinary) 
+<img width="918" height="898" alt="image" src="https://github.com/user-attachments/assets/446d5208-ad8b-4ac5-bfed-b42ec29e5158" />
+
+- Dashboard with user metrics (posts, likes, comments, followers) fetched in real-time 
+<img width="1496" height="891" alt="image" src="https://github.com/user-attachments/assets/85edee54-bf65-482c-a19d-cc3288f8f744" />
+
 
 ---
 
