@@ -70,7 +70,7 @@
             <!-- Sidebar / Profile Card (Column 1) -->
             <div class="lg:col-span-1 card-dark p-6 rounded-xl shadow-2xl h-fit">
                 <div class="text-center">
-                    <img src="<%= user.profileImage %>" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-sky-500 object-cover">
+                    <img src="<%= user.profileImage ? user.profileImage : 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80' %>" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-sky-500 object-cover">
                     <h3 class="text-3xl font-bold text-white mb-1"><%= user.username %></h3>
                     <p class="text-sky-400 mb-4"><%= user.email %></p>
                 </div>
