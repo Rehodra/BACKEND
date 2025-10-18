@@ -12,12 +12,10 @@
   .bg-gradient-dark { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
   .card-dark { background-color: #1f2937; }
 
-  /* ------------------------- */
   /* Post Hover Animation */
-  /* ------------------------- */
   .post-link {
       position: relative;
-      padding-left: 1.5rem; /* space for left bar */
+      padding-left: 1.5rem;
       border-radius: 0.75rem;
       background-color: transparent;
       cursor: pointer;
@@ -31,13 +29,13 @@
       top: 0;
       bottom: 0;
       width: 0;
-      background-color: #0ea5e9; /* sky-500 */
-      border-radius: 0.75rem; /* rounded blue bar */
+      background-color: #0ea5e9;
+      border-radius: 0.75rem;
       transition: width 0.3s ease;
   }
 
   .post-link:hover::before {
-      width: 0.25rem; /* 4px */
+      width: 0.25rem;
   }
 
   .post-link:hover {
@@ -51,15 +49,16 @@
   .modal-overlay { background-color: rgba(0,0,0,0.7); }
 </style>
 </head>
-<body class="bg-gradient-dark min-h-screen antialiased p-8 lg:p-12">
+
+<body class="bg-gradient-dark min-h-screen antialiased p-4 sm:p-6 lg:p-12">
 
 <!-- Header -->
-<header class="mb-10 flex justify-between items-center max-w-5xl mx-auto">
-  <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
+<header class="mb-10 flex justify-between items-center flex-wrap max-w-5xl mx-auto gap-4">
+  <h1 class="text-2xl sm:text-3xl font-extrabold text-sky-500 flex items-center">
     <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
   </h1>
-  <nav>
-    <a href="/profile" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150 mr-6">
+  <nav class="flex flex-wrap gap-4 sm:gap-6">
+    <a href="/profile" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150">
       <i class="fas fa-user mr-1"></i> Profile
     </a>
     <a href="/logout" class="text-gray-300 hover:text-red-500 font-medium transition duration-150">
@@ -68,42 +67,48 @@
   </nav>
 </header>
 
+<!-- Main Section -->
 <div class="max-w-5xl mx-auto">
-  <div class="mb-8 flex justify-between items-center border-b border-gray-700 pb-4">
-    <h2 class="text-4xl font-extrabold text-white tracking-tight flex items-center">
+  <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-700 pb-4 gap-3">
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center">
       <i class="fas fa-list-alt mr-3 text-sky-500"></i> My Blog Posts
     </h2>
-    <a href="/write-post" class="inline-flex items-center px-4 py-2 bg-sky-600 text-white text-sm font-semibold rounded-lg hover:bg-sky-700 transition duration-200 shadow-md transform hover:-translate-y-px">
+    <a href="/write-post" class="inline-flex items-center px-4 py-2 bg-sky-600 text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-sky-700 transition duration-200 shadow-md transform hover:-translate-y-px">
       <i class="fas fa-plus-circle mr-2"></i> New Post
     </a>
   </div>
 
-  <div class="card-dark rounded-xl p-6 shadow-2xl">
+  <div class="card-dark rounded-xl p-4 sm:p-6 shadow-2xl">
     <% if (posts && posts.length > 0) { %>
       <ul class="divide-y divide-gray-800">
         <% posts.reverse().forEach(post => { %>
           <li class="post-link py-4 pr-2 rounded-md transition duration-150" data-post-id="<%= post._id %>" data-post-title="<%= post.title %>">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              
               <!-- Post Details -->
-              <div class="flex-grow min-w-0 mb-2 sm:mb-0">
+              <div class="flex-grow min-w-0">
                 <a href="/single-blog/<%= post._id %>" class="block">
-                  <p class="text-xl font-semibold text-white hover:text-sky-400 transition duration-150 truncate">
+                  <p class="text-lg sm:text-xl font-semibold text-white hover:text-sky-400 transition duration-150 truncate">
                     <%= post.title %>
                   </p>
-                  <p class="text-sm text-gray-400 mt-1 flex items-center flex-wrap">
-                    <i class="fas fa-calendar-alt mr-2 text-sky-500"></i> Published: <%= post.createdAt.toDateString() %> 
-                    <span class="mx-3 text-gray-600 hidden sm:inline">|</span>
-                    <i class="fas fa-thumbs-up mr-2 text-sky-500 mt-1 sm:mt-0"></i> Likes: <%= post.likes.length %>
+                  <p class="text-sm text-gray-400 mt-1 flex items-center flex-wrap gap-1 sm:gap-3">
+                    <span class="flex items-center">
+                      <i class="fas fa-calendar-alt mr-2 text-sky-500"></i> Published: <%= post.createdAt.toDateString() %> 
+                    </span>
+                    <span class="hidden sm:inline text-gray-600">|</span>
+                    <span class="flex items-center">
+                      <i class="fas fa-thumbs-up mr-2 text-sky-500"></i> Likes: <%= post.likes.length %>
+                    </span>
                   </p>
                 </a>
               </div>
 
               <!-- Actions -->
-              <div class="flex space-x-3 flex-shrink-0 mt-2 sm:mt-0">
-                <a href="/post/edit/<%= post._id %>" class="inline-flex items-center px-4 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition duration-150 shadow-md">
-                  <i class="fas fa-edit mr-2"></i> Edit Post
+              <div class="flex flex-wrap justify-start sm:justify-end gap-2">
+                <a href="/post/edit/<%= post._id %>" class="inline-flex items-center px-3 sm:px-4 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition duration-150 shadow-md">
+                  <i class="fas fa-edit mr-2"></i> Edit
                 </a>
-                <button onclick="openDeleteModal('<%= post._id %>', '<%= post.title %>')" class="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition duration-150 shadow-md">
+                <button onclick="openDeleteModal('<%= post._id %>', '<%= post.title %>')" class="inline-flex items-center px-3 sm:px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition duration-150 shadow-md">
                   <i class="fas fa-trash-alt mr-2"></i> Delete
                 </button>
               </div>
@@ -125,21 +130,21 @@
 </div>
 
 <!-- Delete Modal -->
-<div id="delete-modal" class="modal fixed inset-0 z-50 items-center justify-center transition-opacity duration-300 modal-overlay">
-  <div class="bg-gray-800 rounded-xl p-6 w-full max-w-sm mx-4 shadow-2xl transform transition-transform duration-300">
-    <h3 class="text-xl font-bold text-red-500 mb-4 flex items-center">
+<div id="delete-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-overlay px-4">
+  <div class="bg-gray-800 rounded-xl p-6 w-full max-w-sm sm:max-w-md mx-auto shadow-2xl transform transition-transform duration-300 text-center">
+    <h3 class="text-lg sm:text-xl font-bold text-red-500 mb-4 flex items-center justify-center">
       <i class="fas fa-exclamation-triangle mr-2"></i> Confirm Deletion
     </h3>
-    <p class="text-gray-300 mb-6">
+    <p class="text-gray-300 mb-6 text-sm sm:text-base">
       Are you sure you want to delete the post "<strong id="modal-post-title" class="text-white font-medium"></strong>"? This action cannot be undone.
     </p>
-    <div class="flex justify-end space-x-3">
+    <div class="flex flex-col sm:flex-row justify-end sm:justify-center gap-3">
       <button onclick="closeDeleteModal()" class="px-4 py-2 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition duration-150">
         Cancel
       </button>
       <form id="delete-form" method="POST">
         <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition duration-150">
-          <i class="fas fa-trash-alt mr-2"></i> Delete Permanently
+          <i class="fas fa-trash-alt mr-2"></i> Delete
         </button>
       </form>
     </div>
@@ -154,19 +159,22 @@ const deleteForm = document.getElementById('delete-form');
 function openDeleteModal(postId, postTitle) {
   modalPostTitle.textContent = postTitle;
   deleteForm.action = `/post/delete/${postId}`;
-  modal.style.display = 'flex';
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
 }
 
 function closeDeleteModal() {
-  modal.style.display = 'none';
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
   modalPostTitle.textContent = '';
   deleteForm.action = '';
 }
 
-// Close modal on click outside
+// Close modal when clicking outside
 modal.addEventListener('click', (event) => {
-  if(event.target === modal) closeDeleteModal();
+  if (event.target === modal) closeDeleteModal();
 });
 </script>
+
 </body>
 </html>
