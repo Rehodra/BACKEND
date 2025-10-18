@@ -1,87 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Write Post - Nimi Blog</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .bg-gradient-dark {
-      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    }
-    .card-dark { background-color: #1f2937; }
-    .input-field {
-      background-color: rgba(31, 41, 55, 0.7);
-      border: 1px solid #374151;
-      color: #f3f4f6;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      width: 100%;
-      transition: border 0.2s ease;
-    }
-    .input-field:focus {
-      outline: none;
-      border-color: #0ea5e9;
-      box-shadow: 0 0 0 1px #0ea5e9;
-    }
-    textarea.input-field {
-      min-height: 200px;
-      resize: vertical;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Write Post - Nimi Blog</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+body { font-family: 'Inter', sans-serif; }
+.bg-gradient-dark { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
+.card-dark { background-color: #1f2937; }
+.input-field {
+  background-color: rgba(31, 41, 55, 0.7);
+  border: 1px solid #374151;
+  color: #f3f4f6;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  transition: border 0.2s ease;
+}
+.input-field:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 1px #0ea5e9;
+}
+textarea.input-field {
+  min-height: 200px;
+  resize: vertical;
+}
+</style>
 </head>
 
-<body class="bg-gradient-dark min-h-screen antialiased p-8 lg:p-12">
+<body class="bg-gradient-dark min-h-screen antialiased p-4 md:p-8">
 
-  <header class="mb-10 flex justify-between items-center max-w-5xl mx-auto">
-    <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
-      <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
-    </h1>
-    <nav>
-      <a href="/profile" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150 mr-6">
-        <i class="fas fa-user-circle mr-1"></i> Profile
+<!-- Header -->
+<header class="mb-10 max-w-5xl mx-auto flex justify-between items-center relative">
+  <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
+    <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
+  </h1>
+
+  <!-- Hamburger & nav -->
+  <div class="relative">
+    <button id="menu-btn" class="md:hidden text-gray-300 hover:text-sky-500 focus:outline-none">
+      <i class="fas fa-bars text-2xl"></i>
+    </button>
+    <nav id="menu" class="hidden absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg md:flex md:static md:w-auto md:bg-transparent md:shadow-none flex-col md:flex-row md:space-x-6">
+      <a href="/profile" class="block md:inline-block px-4 py-2 md:px-3 md:py-1 text-gray-300 hover:text-sky-500 font-medium transition duration-150">
+        <i class="fas fa-user-circle mr-2"></i> Profile
       </a>
-      <a href="/logout" class="text-gray-300 hover:text-red-500 font-medium transition duration-150">
-        <i class="fas fa-sign-out-alt mr-1"></i> Log Out
+      <a href="/logout" class="block md:inline-block px-4 py-2 md:px-3 md:py-1 text-gray-300 hover:text-red-500 font-medium transition duration-150">
+        <i class="fas fa-sign-out-alt mr-2"></i> Log Out
       </a>
     </nav>
-  </header>
-
-  <div class="max-w-4xl mx-auto">
-    <div class="card-dark rounded-xl p-8 shadow-2xl">
-      <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
-        <i class="fas fa-pen-nib text-sky-500 mr-3"></i> Write a New Post
-      </h2>
-
-      <form action="/create-post" method="POST" class="space-y-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-400 mb-2">Post Title</label>
-          <input type="text" name="title" required placeholder="Enter title here..."
-                 class="input-field" />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-400 mb-2">Content</label>
-          <textarea name="content" required placeholder="Write your story here..."
-                    class="input-field"></textarea>
-        </div>
-
-        <div class="flex justify-end space-x-4 mt-8">
-          <a href="/profile" 
-             class="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition duration-200">
-            <i class="fas fa-arrow-left mr-2"></i> Cancel
-          </a>
-          <button type="submit"
-                  class="px-6 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg shadow-lg shadow-sky-500/30 transition duration-200 transform hover:-translate-y-px">
-            <i class="fas fa-paper-plane mr-2"></i> Publish Post
-          </button>
-        </div>
-      </form>
-    </div>
   </div>
+</header>
+
+<div class="max-w-4xl mx-auto">
+  <div class="card-dark rounded-xl p-6 md:p-8 shadow-2xl">
+    <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+      <i class="fas fa-pen-nib text-sky-500 mr-3"></i> Write a New Post
+    </h2>
+
+    <form action="/create-post" method="POST" class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-400 mb-2">Post Title</label>
+        <input type="text" name="title" required placeholder="Enter title here..."
+               class="input-field" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-400 mb-2">Content</label>
+        <textarea name="content" required placeholder="Write your story here..."
+                  class="input-field"></textarea>
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4 mt-4">
+        <a href="/profile" 
+           class="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition duration-200 text-center sm:text-left">
+          <i class="fas fa-arrow-left mr-2"></i> Cancel
+        </a>
+        <button type="submit"
+                class="px-6 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg shadow-lg shadow-sky-500/30 transition duration-200 transform hover:-translate-y-px">
+          <i class="fas fa-paper-plane mr-2"></i> Publish Post
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const menuBtn = document.getElementById('menu-btn');
+const menu = document.getElementById('menu');
+menuBtn.addEventListener('click', () => {
+  menu.classList.toggle('hidden');
+});
+</script>
 
 </body>
 </html>

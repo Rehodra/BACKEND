@@ -19,19 +19,27 @@
 <body class="bg-gradient-dark min-h-screen antialiased p-8 lg:p-12">
 
     <!-- Header -->
-    <header class="mb-10 flex justify-between items-center max-w-6xl mx-auto">
-        <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
-            <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
-        </h1>
-        <nav>
-            <a href="/dashboard" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150 mr-6">
-                <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
-            </a>
-            <a href="/logout" class="text-gray-300 hover:text-red-500 font-medium transition duration-150">
-                <i class="fas fa-sign-out-alt mr-1"></i> Log Out
-            </a>
-        </nav>
-    </header>
+    <header class="mb-10 max-w-5xl mx-auto flex justify-between items-center relative">
+  <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
+    <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
+  </h1>
+
+  <!-- Hamburger & nav -->
+<div class="relative">
+  <button id="menu-btn" class="md:hidden text-gray-300 hover:text-sky-500 focus:outline-none z-50">
+    <i class="fas fa-bars text-2xl"></i>
+  </button>
+  <nav id="menu" class="hidden fixed top-16 right-4 w-48 bg-gray-800 rounded-lg shadow-lg z-40 flex-col md:flex md:static md:w-auto md:bg-transparent md:shadow-none md:flex-row md:space-x-6">
+    <a href="/dashboard" class="block md:inline-block px-4 py-2 md:px-3 md:py-1 text-gray-300 hover:text-sky-500 font-medium transition duration-150">
+      <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+    </a>
+    <a href="/logout" class="block md:inline-block px-4 py-2 md:px-3 md:py-1 text-gray-300 hover:text-red-500 font-medium transition duration-150">
+      <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+    </a>
+  </nav>
+</div>
+
+</header>
 
     <main class="max-w-6xl mx-auto">
 
@@ -92,6 +100,20 @@
         <% } %>
 
     </main>
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const menu = document.getElementById('menu');
 
+        menuBtn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

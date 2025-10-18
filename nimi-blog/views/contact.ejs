@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us - Nimi Blog</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .bg-gradient-dark { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
+  .input-field {
+    background-color: rgba(31,41,55,0.7);
+    border: 1px solid #374151;
+    color: #f3f4f6;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    transition: border 0.2s ease;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 1px #0ea5e9;
+  }
+  .textarea-field { min-height: 150px; resize: vertical; }
+</style>
+</head>
+<body class="bg-gradient-dark min-h-screen flex flex-col">
+
+<!-- Header with Hamburger -->
+<header class="flex justify-between w-full items-center p-4 max-w-7xl mx-auto">
+  <h1 class="text-3xl font-extrabold text-sky-500 flex items-center gap-3 md:gap-4">
+    <i class="fas fa-feather-alt"></i>
+    <span>Nimi Blog</span>
+  </h1>
+
+  <!-- Mobile Hamburger -->
+  <div class="md:hidden relative">
+    <button id="menu-btn" class="text-gray-300 hover:text-sky-500 text-3xl focus:outline-none z-50 ml-4">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav id="menu" class="hidden fixed top-16 right-4 w-48 bg-gray-800 rounded-lg shadow-lg z-40 flex-col space-y-2 p-4">
+      <a href="/" class="text-gray-300 hover:text-sky-500 font-medium flex items-center"><i class="fas fa-home mr-2"></i> Home</a>
+      <a href="/contact" class="text-gray-300 hover:text-sky-500 font-medium flex items-center"><i class="fas fa-envelope mr-2"></i> Contact Us</a>
+      <a href="/login" class="text-gray-300 hover:text-sky-500 font-medium flex items-center"><i class="fas fa-sign-in-alt mr-2"></i> Log In</a>
+      <a href="/register" class="text-gray-300 hover:text-sky-500 font-medium flex items-center"><i class="fas fa-user-plus mr-2"></i> Sign Up</a>
+    </nav>
+  </div>
+
+  <!-- Desktop Menu -->
+  <nav class="hidden md:flex space-x-6">
+    <a href="/" class="text-gray-300 hover:text-sky-500 font-medium flex items-center"><i class="fas fa-home mr-2"></i> Home</a>
+    <a href="/contact" class="text-gray-300 hover:text-sky-500 font-medium flex items-center"><i class="fas fa-envelope mr-2"></i> Contact Us</a>
+    <a href="/login" class="text-gray-300 hover:text-sky-500 font-medium flex items-center"><i class="fas fa-sign-in-alt mr-2"></i> Log In</a>
+    <a href="/register" class="text-gray-300 hover:text-sky-500 font-medium flex items-center"><i class="fas fa-user-plus mr-2"></i> Sign Up</a>
+  </nav>
+</header>
+
+<!-- Main Content -->
+<main class="flex-1 flex items-center justify-center p-4">
+  <div class="w-full max-w-4xl bg-gray-900 rounded-xl shadow-2xl overflow-hidden md:flex">
+
+    <!-- Left Panel: Contact Info -->
+    <div class="md:w-1/2 p-8 bg-gray-800 flex flex-col justify-center text-white space-y-6">
+      <h2 class="text-3xl font-bold text-sky-500">Get in Touch</h2>
+      <p class="text-gray-300">We would love to hear from you! Fill out the form or reach out through our social channels.</p>
+      
+      <div class="space-y-4">
+        <p class="flex items-center"><i class="fas fa-envelope mr-3 text-sky-500"></i> contact@nimiblog.com</p>
+        <p class="flex items-center"><i class="fas fa-phone mr-3 text-sky-500"></i> +91 1234 567 890</p>
+        <p class="flex items-center"><i class="fas fa-map-marker-alt mr-3 text-sky-500"></i> Mumbai, India</p>
+      </div>
+
+      <div class="flex space-x-4 mt-6">
+        <a href="#" class="text-gray-300 hover:text-blue-500 text-2xl"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="text-gray-300 hover:text-purple-500 text-2xl"><i class="fab fa-github"></i></a>
+        <a href="#" class="text-gray-300 hover:text-blue-400 text-2xl"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+
+    <!-- Right Panel: Contact Form -->
+    <div class="md:w-1/2 p-8">
+      <h2 class="text-3xl font-bold text-white mb-6 text-center md:text-left">Send a Message</h2>
+      <form action="/send-contact" method="POST" class="space-y-5">
+        <div>
+          <label class="block text-gray-300 mb-1">Name</label>
+          <input type="text" name="name" required placeholder="Your Name" class="input-field">
+        </div>
+        <div>
+          <label class="block text-gray-300 mb-1">Email</label>
+          <input type="email" name="email" required placeholder="you@example.com" class="input-field">
+        </div>
+        <div>
+          <label class="block text-gray-300 mb-1">Subject</label>
+          <input type="text" name="subject" required placeholder="Subject" class="input-field">
+        </div>
+        <div>
+          <label class="block text-gray-300 mb-1">Message</label>
+          <textarea name="message" required placeholder="Write your message..." class="input-field textarea-field"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:-translate-y-px flex items-center justify-center">
+          <i class="fas fa-paper-plane mr-2"></i> Send Message
+        </button>
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<script>
+const menuBtn = document.getElementById('menu-btn');
+const menu = document.getElementById('menu');
+menuBtn.addEventListener('click', () => menu.classList.toggle('hidden'));
+</script>
+
+</body>
+</html>

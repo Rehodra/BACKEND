@@ -12,72 +12,86 @@
   .bg-gradient-dark { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
   .card-dark { background-color: #1f2937; }
 
-  /* ------------------------- */
-  /* Post Hover Animation */
-  /* ------------------------- */
   .post-link {
-      position: relative;
-      padding-left: 1.5rem; /* space for left bar */
-      border-radius: 0.75rem;
-      background-color: transparent;
-      cursor: pointer;
-      transition: transform 0.3s ease, background-color 0.3s ease;
+    position: relative;
+    padding-left: 1.5rem;
+    border-radius: 0.75rem;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
   }
-
   .post-link::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 0;
-      background-color: #0ea5e9; /* sky-500 */
-      border-radius: 0.75rem; /* rounded blue bar */
-      transition: width 0.3s ease;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background-color: #0ea5e9;
+    border-radius: 0.75rem;
+    transition: width 0.3s ease;
   }
-
   .post-link:hover::before {
-      width: 0.25rem; /* 4px */
+    width: 0.25rem;
   }
-
   .post-link:hover {
-      transform: translateX(3px);
-      background-color: rgba(31, 41, 55, 0.5);
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.06);
+    transform: translateX(3px);
+    background-color: rgba(31, 41, 55, 0.5);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.06);
   }
 
-  /* Modal */
   .modal { display: none; }
   .modal-overlay { background-color: rgba(0,0,0,0.7); }
 </style>
 </head>
-<body class="bg-gradient-dark min-h-screen antialiased p-8 lg:p-12">
+<body class="bg-gradient-dark min-h-screen antialiased p-6 lg:p-12">
 
 <!-- Header -->
-<header class="mb-10 flex justify-between items-center max-w-5xl mx-auto">
+<header class="mb-10 flex justify-between items-center max-w-5xl mx-auto relative">
   <h1 class="text-3xl font-extrabold text-sky-500 flex items-center">
     <i class="fas fa-feather-alt mr-3"></i> Nimi Blog
   </h1>
-  <nav>
-    <a href="/profile" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150 mr-6">
+
+  <!-- Desktop Navbar -->
+  <nav class="hidden md:flex space-x-6">
+    <a href="/" class="text-gray-300 hover:text-sky-400 font-medium transition duration-150">
+      <i class="fas fa-home mr-1"></i> Home
+    </a>
+    <a href="/profile" class="text-gray-300 hover:text-sky-500 font-medium transition duration-150">
       <i class="fas fa-user mr-1"></i> Profile
     </a>
     <a href="/logout" class="text-gray-300 hover:text-red-500 font-medium transition duration-150">
       <i class="fas fa-sign-out-alt mr-1"></i> Log Out
     </a>
   </nav>
+
+  <!-- Hamburger Button -->
+  <button id="menu-btn" class="text-gray-300 text-2xl md:hidden focus:outline-none">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu" class="hidden absolute top-full right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg md:hidden">
+    <a href="/" class="block px-4 py-2 text-gray-300 hover:text-sky-400">
+      <i class="fas fa-home mr-2"></i> Home
+    </a>
+    <a href="/profile" class="block px-4 py-2 text-gray-300 hover:text-sky-500 border-t border-gray-700">
+      <i class="fas fa-user mr-2"></i> Profile
+    </a>
+    <a href="/logout" class="block px-4 py-2 text-gray-300 hover:text-red-500 border-t border-gray-700">
+      <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+    </a>
+  </div>
 </header>
 
+<!-- Main Section -->
 <div class="max-w-5xl mx-auto">
-  <div class="mb-8 flex justify-between items-center border-b border-gray-700 pb-4">
-    <h2 class="text-4xl font-extrabold text-white tracking-tight flex items-center">
-        <div>
-            <img src="<%= user && user.profileImage ? user.profileImage : 'https://via.placeholder.com/40/3b82f6/ffffff?text=U' %>"
-                class="w-14 h-14 rounded-full object-cover mr-3 border-2 border-sky-500" />
-        </div>
-       <%= userName %>'s Blog Posts
+  <div class="mb-8 flex flex-col sm:flex-row justify-between items-center border-b border-gray-700 pb-4 gap-4">
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center text-center sm:text-left">
+      <img src="<%= user && user.profileImage ? user.profileImage : 'https://via.placeholder.com/40/3b82f6/ffffff?text=U' %>"
+           class="w-14 h-14 rounded-full object-cover mr-3 border-2 border-sky-500" />
+      <%= userName %>'s Blog Posts
     </h2>
-    
   </div>
 
   <div class="card-dark rounded-xl p-6 shadow-2xl">
@@ -85,66 +99,55 @@
       <ul class="divide-y divide-gray-800">
         <% posts.reverse().forEach(post => { %>
           <li class="post-link py-4 pr-2 rounded-md transition duration-150" data-post-id="<%= post._id %>" data-post-title="<%= post.title %>">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <!-- Post Details -->
-              <div class="flex-grow min-w-0 mb-2 sm:mb-0">
-                <a href="/single-blog/<%= post._id %>" class="block">
-                  <p class="text-xl font-semibold text-white hover:text-sky-400 transition duration-150 truncate">
-                    <%= post.title %>
-                  </p>
-                  <p class="text-sm text-gray-400 mt-1 flex items-center flex-wrap">
-                    <i class="fas fa-calendar-alt mr-2 text-sky-500"></i> Published: <%= post.createdAt.toDateString() %> 
-                    <span class="mx-3 text-gray-600 hidden sm:inline">|</span>
-                    <i class="fas fa-thumbs-up mr-2 text-sky-500 mt-1 sm:mt-0"></i> Likes: <%= post.likes.length %>
-                  </p>
-                </a>
-              </div>
+  <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
 
-              <!-- Actions -->
-              <div class="flex space-x-3 flex-shrink-0 mt-2 sm:mt-0">
-                <a href="/single-blog/<%= post._id %>" class="inline-flex items-center px-4 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition duration-150 shadow-md">
-                  <i class="fas fa-eye mr-2"></i> View Post
-                </a>
-              </div>
-            </div>
-          </li>
+    <!-- Post Details -->
+    <div class="flex-grow min-w-0">
+      <a href="/single-blog/<%= post._id %>" class="block">
+        <p class="text-xl font-semibold text-white hover:text-sky-400 transition duration-150 truncate">
+          <%= post.title %>
+        </p>
+        <p class="text-sm text-gray-400 mt-1 flex items-center flex-wrap">
+          <i class="fas fa-calendar-alt mr-2 text-sky-500"></i> Published: <%= post.createdAt.toDateString() %>
+          <span class="mx-3 text-gray-600 sm:inline">|</span>
+          <i class="fas fa-thumbs-up mr-2 text-sky-500 mt-1 sm:mt-0"></i> Likes: <%= post.likes.length %>
+        </p>
+      </a>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-end sm:justify-start gap-3 flex-none w-full sm:w-auto">
+      <a href="/single-blog/<%= post._id %>" 
+         class="flex-1 sm:flex-none text-center inline-flex justify-center items-center px-4 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition duration-150 shadow-md w-full sm:w-auto">
+        <i class="fas fa-eye mr-2"></i> View Post
+      </a>
+    </div>
+
+  </div>
+</li>
+
         <% }) %>
       </ul>
     <% } else { %>
       <div class="text-center py-10 text-gray-500 mt-4">
         <i class="fas fa-pen-nib text-5xl mb-3 text-gray-600"></i>
-        <p class="text-lg font-medium text-white mb-2"><%= userName %> haven't published any posts yet.</p>
+        <p class="text-lg font-medium text-white mb-2"><%= userName %> hasn't published any posts yet.</p>
       </div>
     <% } %>
   </div>
 </div>
 
-<!-- Delete Modal -->
-<div id="delete-modal" class="modal fixed inset-0 z-50 items-center justify-center transition-opacity duration-300 modal-overlay">
-  <div class="bg-gray-800 rounded-xl p-6 w-full max-w-sm mx-4 shadow-2xl transform transition-transform duration-300">
-    <h3 class="text-xl font-bold text-red-500 mb-4 flex items-center">
-      <i class="fas fa-exclamation-triangle mr-2"></i> Confirm Deletion
-    </h3>
-    <p class="text-gray-300 mb-6">
-      Are you sure you want to delete the post "<strong id="modal-post-title" class="text-white font-medium"></strong>"? This action cannot be undone.
-    </p>
-    <div class="flex justify-end space-x-3">
-      <button onclick="closeDeleteModal()" class="px-4 py-2 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition duration-150">
-        Cancel
-      </button>
-      <form id="delete-form" method="POST">
-        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition duration-150">
-          <i class="fas fa-trash-alt mr-2"></i> Delete Permanently
-        </button>
-      </form>
-    </div>
-  </div>
-</div>
 
 <script>
 const modal = document.getElementById('delete-modal');
 const modalPostTitle = document.getElementById('modal-post-title');
 const deleteForm = document.getElementById('delete-form');
+const menuBtn = document.getElementById('menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+
+menuBtn.addEventListener('click', () => {
+  mobileMenu.classList.toggle('hidden');
+});
 
 function openDeleteModal(postId, postTitle) {
   modalPostTitle.textContent = postTitle;
@@ -157,11 +160,7 @@ function closeDeleteModal() {
   modalPostTitle.textContent = '';
   deleteForm.action = '';
 }
-
-// Close modal on click outside
-modal.addEventListener('click', (event) => {
-  if(event.target === modal) closeDeleteModal();
-});
 </script>
+
 </body>
 </html>

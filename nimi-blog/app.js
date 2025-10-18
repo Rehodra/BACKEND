@@ -175,6 +175,9 @@ app.get('/register',(req,res)=>{
     res.render('register')
 })
 
+app.get("/contact", (req,res)=>{
+  res.render("contact")
+})
 app.get('/profile/edit', isLoggedIn,  async (req,res)=>{
     const user = await userModel.findOne({email:req.user.email})
     res.render('edit-profile', { user })
@@ -188,7 +191,7 @@ app.get("/user/:id/view-all-posts", isLoggedIn, async (req, res) => {
   // Extract username from req.user
   const userName = req.user.userName;
 
-  res.render('view-all-posts', { posts, userName });
+  res.render('view-all-posts', { posts, userName, token: req.cookies.token });
 });
 
 
@@ -381,7 +384,20 @@ app.post('/login-user', async(req,res)=>{
     }
 })
 
+app.post("/send-contact", async (req, res) => {
+  const { name, email, message } = req.body;
 
+  try {
+    console.log("Contact Form Submission:");
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Message:", message);
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error in contact form submission:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 app.post('/create-post', isLoggedIn, async(req,res)=>{
     const {title, content} = req.body
     const {userName, email} = req.user
