@@ -1,0 +1,6 @@
+Database: mangaart
+Collections:
+  - users
+  - artworks
+  - (optional) sessions
+  - (optional) logs
